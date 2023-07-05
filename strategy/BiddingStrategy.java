@@ -1,4 +1,4 @@
-package com.OnlineBiddingSystem.demo;
+package com.OnlineBiddingSystem.demo.strategy;
 
 import com.OnlineBiddingSystem.demo.entity.Item;
 import com.OnlineBiddingSystem.demo.entity.User;

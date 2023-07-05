@@ -1,56 +1,20 @@
 package com.OnlineBiddingSystem.demo.entity;
 
-public class Item {
+public interface Item {
+	
+	public void placeBid(User user, double bidAmount);
+	public String getName();
 
-	private String name;
-	private String description;
-	private Double currentHighestBid;
-	private User highestBidder;
+	public void setName(String name);
 
-	public Item(String name, String description, Double startingBid) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.currentHighestBid = startingBid;
-	}
+	public String getDescription();
 
-	public void placeBid(User user, double bidAmount) {
-		if (bidAmount > currentHighestBid) {
-			currentHighestBid = bidAmount;
-			highestBidder = user;
-			user.addBid(new Bid(this, bidAmount));
-		}
-	}
+	public void setDescription(String description) ;
 
-	public String getName() {
-		return name;
-	}
+	public Double getCurrentHighestBid() ;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public void setCurrentHighestBid(Double currentHighestBid);
+	public User getHighestBidder() ;
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Double getCurrentHighestBid() {
-		return currentHighestBid;
-	}
-
-	public void setCurrentHighestBid(Double currentHighestBid) {
-		this.currentHighestBid = currentHighestBid;
-	}
-
-	public User getHighestBidder() {
-		return highestBidder;
-	}
-
-	public void setHighestBidder(User highestBidder) {
-		this.highestBidder = highestBidder;
-	}
+	public void setHighestBidder(User highestBidder) ;
 }

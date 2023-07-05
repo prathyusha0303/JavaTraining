@@ -14,8 +14,7 @@ public class ItemManagementService {
 		this.auction=Auction.getInstance();
 	}
 
-	public void addItem(String name,String description,Double startingBid) {
-		Item item=ItemFactory.createItem(name, description, startingBid);
+	public void addItem(Item item) {
 		auction.addItem(item);
 	}
 	public List<Item> searchItems(String keyword){

@@ -3,12 +3,15 @@ package com.OnlineBiddingSystem.demo.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+import com.OnlineBiddingSystem.demo.UserManagementService;
+import com.OnlineBiddingSystem.demo.observer.Observer;
+
+public class User implements Observer {
 
 	private String userName;
 	private String password;
 	private List<Bid> biddingHistory;
-	
+
 	public void addBid(Bid bid) {
 		biddingHistory.add(bid);
 	}
@@ -49,6 +52,15 @@ public class User {
 		return "User [userName=" + userName + ", password=" + password + ", biddingHistory=" + biddingHistory + "]";
 	}
 
-	}
-	
+	@Override
+	public void update(Item item, Observer user) {
 
+		for (Bid item2 : ((User) user).getBiddingHistory()) {
+			if (item.getName().equals(item2.getItem().getName())
+					&& item.getCurrentHighestBid() > item2.getBidAmount()) {
+				System.out.println("Your OutBidded for Item " + item.getName() + " By amount "
+						+ (item.getCurrentHighestBid() - item2.getBidAmount()));
+			}
+		}
+	}
+}

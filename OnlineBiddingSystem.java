@@ -5,7 +5,12 @@ import java.util.Scanner;
 
 import com.OnlineBiddingSystem.demo.entity.Bid;
 import com.OnlineBiddingSystem.demo.entity.Item;
+import com.OnlineBiddingSystem.demo.entity.Laptop;
 import com.OnlineBiddingSystem.demo.entity.User;
+import com.OnlineBiddingSystem.demo.factory.ItemFactory;
+import com.OnlineBiddingSystem.demo.strategy.AutomaticBiddingStrategy;
+import com.OnlineBiddingSystem.demo.strategy.BiddingStrategy;
+import com.OnlineBiddingSystem.demo.strategy.IncrementalBiddingStrategy;
 
 /**
  * Hello world!
@@ -110,17 +115,42 @@ public class OnlineBiddingSystem {
 	}
 
 	private static void addItems(Scanner scanner) {
-		System.out.print("Enter item name: ");
-		String name = scanner.nextLine();
-		System.out.print("Enter item description: ");
-		String description = scanner.nextLine();
-		System.out.print("Enter starting bid amount: ");
-		double startingBid = scanner.nextDouble();
-		scanner.nextLine(); // Consume newline character
-		Item item = ItemFactory.createItem(name, description, startingBid);
-		itemManagementService.addItem(name, description, startingBid);
-		System.out.println("Item added successfully.");
 
+		System.out.println("1. Laptops");
+		System.out.println("2. Mobile");
+
+		System.out.print("Choose the item: ");
+		int choice = scanner.nextInt();
+		scanner.nextLine();
+		switch (choice) {
+		case 1:
+			System.out.println("Enter item name");
+			String name = scanner.nextLine();
+			System.out.print("Enter item description: ");
+			String description = scanner.nextLine();
+			System.out.print("Enter starting bid amount: ");
+			double startingBid = scanner.nextDouble();
+			scanner.nextLine(); // Consume newline character
+			Item item = ItemFactory.createItem(name, description, startingBid);
+			itemManagementService.addItem(item);
+			System.out.println("Item added successfully.");
+			break;
+
+		case 2:
+			System.out.println("Enter item name");
+			name = scanner.nextLine();
+			System.out.print("Enter item description: ");
+			description = scanner.nextLine();
+			System.out.print("Enter starting bid amount: ");
+			startingBid = scanner.nextDouble();
+			scanner.nextLine();
+			System.out.println("Enter its model");
+			String model = scanner.nextLine();
+			item = ItemFactory.createItem(name, description, startingBid, model);
+			itemManagementService.addItem(item);
+			System.out.println("Item added successfully.");
+			break;
+		}
 	}
 
 	private static void searchItems(Scanner scanner) {
@@ -140,6 +170,14 @@ public class OnlineBiddingSystem {
 			Item selectedItem = searchResults.get(selectedIndex - 1);
 			System.out.print("Enter a bid amount: Rs ");
 			double bidAmount = scanner.nextDouble();
+			boolean enter = false;
+			while (!enter) {
+				if (selectedItem.getCurrentHighestBid() > bidAmount) {
+					System.out.println("Amount Should be Greater than currentBid");
+				} else {
+					enter = true;
+				}
+			}
 			System.out.println("1. Incremental Bidding");
 			System.out.println("2. Automatic Bidding");
 			System.out.print("Choose a bidding strategy: ");
@@ -173,7 +211,7 @@ public class OnlineBiddingSystem {
 			} else {
 				System.out.println("Your bidding history:");
 				for (Bid bid : biddingHistory) {
-					Item item = bid.getItem();
+					Laptop item = bid.getItem();
 					System.out.println(item.getName() + " - " + item.getDescription() + " - Bid amount: Rs "
 							+ bid.getBidAmount() + " - Bidding Person: " + currentUser.getUserName());
 				}
